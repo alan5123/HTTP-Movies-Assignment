@@ -19,16 +19,17 @@ function Movie(props) {
       .then(res => setMovie(res.data))
       .catch(err => console.log(err.response));
   };
-const deletemovie = e => {
-  e.preventDefault()
-
-  axios.delete(`http://localhost:5000/api/movies/${e}`)
-  .then(res => {
-    props.getMovieList(res.data);
-    history.push("/movie-list")
-
-  })
-}
+  const deleteMovie = e => {
+    e.preventDefault();
+    axios
+      .delete(`http://localhost:5000/api/movies/${movie.id}`)
+      .then(res => {
+        console.log(res)
+        props.getMovieList(res.data)
+        history.push('/')
+      })
+      .catch(err => console.error(err))
+  }
   const saveMovie = () => {
     props.addToSavedList(movie);
   };
@@ -49,7 +50,7 @@ const deletemovie = e => {
         Save
       </div>
       <button onClick = {routeToEditForm}>Edit</button>
-      <button onClick = {deletemovie}>Delete</button>
+      <button onClick = {deleteMovie}>Delete</button>
     </div>
     
   );
