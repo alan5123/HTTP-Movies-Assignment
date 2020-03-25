@@ -10,7 +10,7 @@ const initialItem = {
 
 const UpdateForm = props => {
     const { id } = useParams();
-    const push = useHistory();
+    const {push} = useHistory();
     const [item, setItem] = useState(initialItem);
   
     const changeHandler = ev => {
@@ -41,7 +41,7 @@ const UpdateForm = props => {
           .then(res => {
        
             props.getMovieList(res.data);
-            push(`/movie-list/${id}`);
+            push(`/movies/${id}`);
           })
           .catch(err => console.log(err));
       };
