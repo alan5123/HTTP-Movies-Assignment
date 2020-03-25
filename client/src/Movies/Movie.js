@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useRouteMatch } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 import MovieCard from './MovieCard';
 
-function Movie({ addToSavedList }) {
+function Movie(props) {
   const [movie, setMovie] = useState(null);
   const match = useRouteMatch();
+  const history = useHistory();
+
+  const routeToEditForm = e => {
+    e.preventDefault();
+    history.push(`/update-movie/${match.params.id}`);
+  };
 
   const fetchMovie = id => {
     axios
@@ -13,9 +19,19 @@ function Movie({ addToSavedList }) {
       .then(res => setMovie(res.data))
       .catch(err => console.log(err.response));
   };
-
+  const deleteMovie = e => {
+    e.preventDefault();
+    axios
+      .delete(`http://localhost:5000/api/movies/${movie.id}`)
+      .then(res => {
+        console.log(res)
+        props.getMovieList(res.data)
+        history.push('/')
+      })
+      .catch(err => console.error(err))
+  }
   const saveMovie = () => {
-    addToSavedList(movie);
+    props.addToSavedList(movie);
   };
 
   useEffect(() => {
@@ -33,7 +49,10 @@ function Movie({ addToSavedList }) {
       <div className='save-button' onClick={saveMovie}>
         Save
       </div>
+      <button onClick = {routeToEditForm}>Edit</button>
+      <button onClick = {deleteMovie}>Delete</button>
     </div>
+    
   );
 }
 
