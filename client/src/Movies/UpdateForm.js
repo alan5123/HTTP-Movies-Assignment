@@ -39,9 +39,8 @@ const UpdateForm = props => {
         axios
           .put(`http://localhost:5000/api/movies/${id}`, item)
           .then(res => {
-           
-            console.log(res);
-            props.setItems(res.data);
+       
+            props.getMovieList(res.data);
             push(`/movie-list/${id}`);
           })
           .catch(err => console.log(err));
